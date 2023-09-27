@@ -446,4 +446,5 @@ class MsgCode extends BaseModel
     const WITHDRAW_MONEY_IS_REQUIRED = ["WITHDRAW_MONEY_IS_REQUIRED", "Withdraw Money Required"];
     const WALLET_TRANSACTION_ID_IS_REQUIRED = ["WALLET_TRANSACTION_ID_IS_REQUIRED", "Wallet Transaction ID is Required"];
     const NO_TRANSACTION_EXISTS = ["NO_TRANSACTION_EXISTS", "Transaction không tồn tại"];
+    const NOT_HAVE_ENOUGH_MONEY = ["NOT_HAVE_ENOUGH_MONEY", "Không có đủ tiền"];
 }
