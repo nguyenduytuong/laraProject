@@ -42,6 +42,7 @@ class User extends Authenticatable
         'is_host',
         'is_admin',
         'host_rank',
+        'kys_status',
         'account_rank',
         'social_id',
         'has_post',
@@ -86,7 +87,8 @@ class User extends Authenticatable
         'is_authorized' => 'boolean',
         'has_post' => 'boolean',
         'has_referral_code' => 'boolean',
-        'is_choosed_decent' => 'boolean'
+        'is_choosed_decent' => 'boolean',
+        'kys_status' => 'boolean'
     ];
 
     // public function getIsHostAttribute($value)

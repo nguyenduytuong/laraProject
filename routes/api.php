@@ -324,6 +324,7 @@ Route::middleware(["mid_res"])
                 //Danh sách Người thuê
                 Route::post('/renters', 'App\Http\Controllers\Api\User\Manage\RenterController@create')->middleware('user_auth', 'check_phone_number', 'is_host');
                 Route::get('/renters', 'App\Http\Controllers\Api\User\Manage\RenterController@getAll')->middleware('user_auth', 'check_phone_number', 'is_host');
+                Route::post('/createKYC', 'App\Http\Controllers\Api\User\Manage\RenterController@createKYC')->middleware('user_auth','permission_admin','check_phone_number', 'is_host');
                 Route::get('/renters/{renter_id}', 'App\Http\Controllers\Api\User\Manage\RenterController@getOne')->middleware('user_auth', 'check_phone_number', 'is_host');
                 Route::delete('/renters/{renter_id}', 'App\Http\Controllers\Api\User\Manage\RenterController@delete')->middleware('user_auth', 'check_phone_number', 'is_host');
                 Route::put('/renters/{renter_id}', 'App\Http\Controllers\Api\User\Manage\RenterController@update')->middleware('user_auth', 'check_phone_number', 'is_host');
