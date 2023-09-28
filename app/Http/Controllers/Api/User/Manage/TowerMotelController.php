@@ -9,6 +9,7 @@ use App\Models\MsgCode;
 use App\Models\Tower;
 use App\Models\TowerMotel;
 use App\Models\Motel;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -173,8 +174,19 @@ class TowerMotelController extends Controller
     // Tower Room -> Hidden or Unhidden 
     public function updateTowerByRoom(Request $request)
     {
-        $TowerMotel_is_room = Motel::where('id', $request->id)->first();
-        if ($TowerMotel_is_room == null) {
+        $towerExists = TowerMotel::where([
+            ['id', $request->tower_motel_id],
+            ['user_id', $request->user->id]
+        ])
+            ->where(function ($query) use ($request) {
+                if ($request->user->is_admin != true) {
+                    $query->where('user_id', $request->user->id);
+                }
+            })
+            ->first();
+
+
+        if ($towerExists == null) {
             return ResponseUtils::json([
                 'code' => Response::HTTP_BAD_REQUEST,
                 'success' => false,
@@ -183,15 +195,31 @@ class TowerMotelController extends Controller
             ]);
         }
 
-        $TowerMotel_is_room->update([
-            'is_room_hidden' => $request->status != null ? $request->status : $TowerMotel_is_room->status,
+        $postExit = Post::where('motel_id', $request->motel_id)->first();
+        $moteExit = Motel::where('id', $request->motel_id)->first();
+
+        $towerExists->update([
+            'is_room_hidden' => $request->status != null ? $request->status : $towerExists->status,
+            'is_room' => $request->status != null ? $request->status : $towerExists->status,
         ]);
+        if ($postExit != null) {
+            $postExit->update([
+                'is_room_hidden' => $request->status != null ? $request->status : $towerExists->status,
+            ]);
+        }
+
+        if ($postExit != null) {
+            $moteExit->update([
+                'status' => $request->status != null ? $request->status : $towerExists->status,
+            ]);
+        }
+
         return ResponseUtils::json([
             'code' => Response::HTTP_OK,
             'success' => true,
             'msg_code' => MsgCode::SUCCESS[0],
             'msg' => MsgCode::SUCCESS[1],
-            'data' => $TowerMotel_is_room,
+            'data' => $towerExists,
         ]);
     }
 }
